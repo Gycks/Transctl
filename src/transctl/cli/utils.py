@@ -3,7 +3,6 @@ from typing import Any, Callable, Iterable
 from transctl.models.engine_config import EngineConfig
 
 import click
-from pydantic.types import JsonDict
 
 
 def styled_prompt(label: str, default: Any | None = None, *, value_proc: Any | None = None,
@@ -48,13 +47,13 @@ def construct_engine_params(engine_model: EngineConfig) -> dict[str, str]:
         click.echo()
 
     for field_name, field in engine_model.model_fields.items():
-        raw_extra: JsonDict | Callable[[JsonDict], None] | None = field.json_schema_extra
+        raw_extra: dict[str, Any] | Callable[[dict[str, Any]], None] | None = field.json_schema_extra
 
         extra: dict[str, Any]
         if raw_extra is None:
             extra = {}
         elif callable(raw_extra):
-            tmp: JsonDict = {}
+            tmp: dict[str, Any] = {}
             raw_extra(tmp)  # callable mutates tmp in-place
             extra = dict(tmp)
         else:

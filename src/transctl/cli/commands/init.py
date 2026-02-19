@@ -78,4 +78,3 @@ def initialize(force: bool, source: str, targets: str, engine: tuple[str], param
     if engine_str in EngineFactory.API_KEY_ENV:
         env_name: str = EngineFactory.API_KEY_ENV[engine_str]
         click.secho(f"Make sure to set the API KEY for your engine. Try export {env_name}=", fg="yellow")
-#TODO: check str(engine) in case -y

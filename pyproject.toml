@@ -29,10 +29,13 @@ dependencies = [
 ]
 
 [project.scripts]
-transctl = "src.cli.main:main"
+transctl = "transctl.cli.main:main"
 
 [tool.setuptools]
-packages = { find = {} }
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
