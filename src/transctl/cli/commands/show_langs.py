@@ -1,4 +1,3 @@
-import sys
 
 from transctl.core.constants.supported_languages import SUPPORTED_LANGUAGES
 

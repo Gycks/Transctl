@@ -1,5 +1,4 @@
 import logging
-import sys
 from importlib.metadata import version
 
 from transctl.cli.commands import COMMANDS

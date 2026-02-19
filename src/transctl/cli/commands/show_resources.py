@@ -1,4 +1,3 @@
-import sys
 
 from transctl.models.translation_resource import TranslationResourceType
 

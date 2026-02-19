@@ -1,4 +1,3 @@
-import sys
 
 from .build import build_cache
 from .purge import purge_cache
