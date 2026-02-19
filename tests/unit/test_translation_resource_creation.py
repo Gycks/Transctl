@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.models.translation_resource import TranslationResource, TranslationLayouts, TAG
+from transctl.models.translation_resource import TAG, TranslationLayouts, TranslationResource
 
 import pytest
 
@@ -109,12 +109,12 @@ def test_from_obj_layout_by_language_keeps_output_name_unchanged(tmp_path: Path)
 def test_from_obj_tag_in_path_requires_key_or_replace_raises(tmp_path: Path):
     # Create a file that would match once tag is decoded, but call with key=None
     key = "en"
-    f = _touch(tmp_path / key / "messages.json")
+    _touch(tmp_path / key / "messages.json")
 
     # Pattern includes TAG and requires decoding; passing key=None causes str.replace to TypeError
     pattern = str(tmp_path / TAG / "messages.json")
     with pytest.raises(TypeError):
-        TranslationResource.from_obj(resource={"path": pattern}, key=None)
+        TranslationResource.from_obj(resource={"path": pattern}, path_resolution_key=None)
 
 
 def test_from_obj_decodes_tag_and_restores_tag_in_output_when_layout_none(tmp_path: Path):
@@ -122,7 +122,7 @@ def test_from_obj_decodes_tag_and_restores_tag_in_output_when_layout_none(tmp_pa
     actual = _touch(tmp_path / key / "messages.json")
 
     pattern = str(tmp_path / TAG / "messages.json")
-    res = TranslationResource.from_obj(resource={"path": pattern}, key=key)
+    res = TranslationResource.from_obj(resource={"path": pattern}, path_resolution_key=key)
 
     assert res is not None
     assert len(res.bucket) == 1
@@ -141,7 +141,7 @@ def test_from_obj_multiple_tag_occurrences_restored_in_output(tmp_path: Path):
 
     # Pattern contains TAG twice
     pattern = str(tmp_path / TAG / f"messages.{TAG}.json")
-    res = TranslationResource.from_obj(resource={"path": pattern}, key=key)
+    res = TranslationResource.from_obj(resource={"path": pattern}, path_resolution_key=key)
 
     assert res is not None
     assert len(res.bucket) == 1
@@ -159,7 +159,7 @@ def test_from_obj_with_tags_and_along_sided_still_prefixes_filename(tmp_path: Pa
     pattern = str(tmp_path / TAG / "messages.json")
     res = TranslationResource.from_obj(
         resource={"path": pattern, "layout": TranslationLayouts.ALONG_SIDED.value},
-        key=key,
+        path_resolution_key=key,
     )
 
     assert res is not None

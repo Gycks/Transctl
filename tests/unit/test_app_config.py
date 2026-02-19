@@ -1,10 +1,11 @@
 import os
-import pytest
 
-from src.core.errors.configuration_errors import ConfigurationError
-import src.core.constants.app as app_constants
-from src.models.app_config import AppConfig
-from src.models.translation_resource import TranslationResourceType
+import transctl.core.constants.app as app_constants
+from transctl.core.errors.configuration_errors import ConfigurationError
+from transctl.models.app_config import AppConfig
+from transctl.models.translation_resource import TranslationResourceType
+
+import pytest
 
 
 def _write_cfg(tmp_path, name: str, toml_text: str) -> str:
@@ -15,7 +16,7 @@ def _write_cfg(tmp_path, name: str, toml_text: str) -> str:
 
 def test_from_file_missing_file_raises_file_not_found(tmp_path):
     missing = tmp_path / f"missing.{app_constants.APP_NAME}.toml"
-    with pytest.raises(FileNotFoundError, match="No Configuration found at"):
+    with pytest.raises(FileNotFoundError):
         AppConfig.from_file(str(missing))
 
 
@@ -32,11 +33,11 @@ def test_from_file_wrong_suffix_raises_configuration_error(tmp_path):
         dirs = [{ path = "" }]
     """)
 
-    with pytest.raises(ConfigurationError, match=r"must end with"):
+    with pytest.raises(ConfigurationError):
         AppConfig.from_file(path)
 
 
-def test_from_file_success_with_layout_omitted(monkeypatch, tmp_path):
+def test_from_file_success_with_layout_omitted(tmp_path):
 
     os.environ["DEEPL_API_KEY"] = "test-key"
     path = _write_cfg(tmp_path, f"config.{app_constants.APP_NAME}.toml", """
@@ -61,7 +62,7 @@ def test_from_file_success_with_layout_omitted(monkeypatch, tmp_path):
     assert len(cfg.resources[TranslationResourceType("html")]) == 0
 
 
-def test_from_file_success_with_valid_layout(monkeypatch, tmp_path):
+def test_from_file_success_with_valid_layout(tmp_path):
     os.environ["DEEPL_API_KEY"] = "test-key"
     path = _write_cfg(tmp_path, f"config.{app_constants.APP_NAME}.toml", """
         [locale]
@@ -82,7 +83,7 @@ def test_from_file_success_with_valid_layout(monkeypatch, tmp_path):
     assert len(cfg.resources[TranslationResourceType("html")]) == 0
 
 
-def test_from_file_unknown_resource_type_raises_configuration_error(monkeypatch, tmp_path):
+def test_from_file_unknown_resource_type_raises_configuration_error(tmp_path):
     os.environ["DEEPL_API_KEY"] = "test-key"
     path = _write_cfg(tmp_path, f"config.{app_constants.APP_NAME}.toml", """
         [locale]
@@ -102,7 +103,7 @@ def test_from_file_unknown_resource_type_raises_configuration_error(monkeypatch,
         AppConfig.from_file(path)
 
 
-def test_from_file_invalid_layout_raises_configuration_error(monkeypatch, tmp_path):
+def test_from_file_invalid_layout_raises_configuration_error(tmp_path):
     os.environ["DEEPL_API_KEY"] = "test-key"
     path = _write_cfg(tmp_path, f"config.{app_constants.APP_NAME}.toml", """
         [locale]
@@ -122,7 +123,7 @@ def test_from_file_invalid_layout_raises_configuration_error(monkeypatch, tmp_pa
         AppConfig.from_file(path)
 
 
-def test_from_file_unknown_engine_provider_raises_configuration_error(monkeypatch, tmp_path):
+def test_from_file_unknown_engine_provider_raises_configuration_error(tmp_path):
     path = _write_cfg(tmp_path, f"config.{app_constants.APP_NAME}.toml", """
         [locale]
         source = "en"

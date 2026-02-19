@@ -33,3 +33,36 @@ transctl = "src.cli.main:main"
 
 [tool.setuptools]
 packages = { find = {} }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 250
+exclude = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.isort]
+section-order = [
+    "standard-library",
+    "first-party",
+    "local-folder",
+    "third-party",
+]
+
+known-first-party = ["transctl"]
+lines-after-imports = 2
+detect-same-package = true
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_ignores = true
+warn_return_any = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+files = ["src"]
