@@ -9,8 +9,7 @@ from transctl.ci_runners.base_runner import BaseRunner
 from transctl.console_formater import ConsoleFormatter
 from transctl.core.constants.app import APP_NAME
 from transctl.models.ci_runner_config import GitLabContext
-from transctl.utils.git_helpers import (commit_all, git_has_changes, gitlab_authed_origin_url,
-                                        push_head_to_branch, set_origin_url)
+from transctl.utils.git_helpers import commit_all, git_has_changes, gitlab_authed_origin_url, push_head_to_branch, set_origin_url
 
 
 class GitLabRunner(BaseRunner):
