@@ -19,9 +19,8 @@ import tomli_w
 @click.option("--param", multiple=True,
               help="Engine parameter in KEY=VALUE form (e.g --param key=value). May be specified multiple times.")
 @click.option("-y", "--no-interactive", is_flag=True, help="Run without interactive prompts")
-def initialize(force: bool, source: str, targets: str, engine: tuple[str], param: str, no_interactive: bool) -> None:
+def initialize(force: bool, source: str, targets: str, engine: str, param: str, no_interactive: bool) -> None:
     params_dict: dict[str, str]
-    engine_str: str
 
     if not no_interactive:
         source = styled_prompt("Please enter the source locale (language code)", default="en")
@@ -36,7 +35,6 @@ def initialize(force: bool, source: str, targets: str, engine: tuple[str], param
             "Choose your translation engine",
             type_=click.Choice([x.value.upper() for x in Engine], case_sensitive=False)
         ).lower()
-        engine_str = str(engine)
 
         match engine:
             case Engine.DeepL.value:
@@ -47,7 +45,6 @@ def initialize(force: bool, source: str, targets: str, engine: tuple[str], param
                 raise click.ClickException("Unable to construct engine.")
 
     else:
-        engine_str = engine[0] if engine else ""
         params_dict = parse_key_value_pairs(param)
         targets_list = [t.strip() for t in targets.split(",") if t.strip()]
 
@@ -68,13 +65,13 @@ def initialize(force: bool, source: str, targets: str, engine: tuple[str], param
 
     # Engine settings
     config["engine"] = {}
-    config["engine"]["provider"] = engine_str
+    config["engine"]["provider"] = engine
     for key, value in params_dict.items():
         config["engine"][key] = value
 
     cfg.save_config(tomli_w.dumps(config))
     click.secho(f"Configuration file created at {cfg.config_path}", fg="green", bold=True)
 
-    if engine_str in EngineFactory.API_KEY_ENV:
-        env_name: str = EngineFactory.API_KEY_ENV[engine_str]
+    if engine in EngineFactory.API_KEY_ENV:
+        env_name: str = EngineFactory.API_KEY_ENV[engine]
         click.secho(f"Make sure to set the API KEY for your engine. Try export {env_name}=", fg="yellow")
