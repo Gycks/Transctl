@@ -4,7 +4,6 @@ Briefly describe what this PR adds, making sure to answer the following question
 
 - What problem does it solve:
 - What changed:
-- What did NOT change (scope boundary):
 
 ---
 
@@ -18,7 +17,7 @@ Briefly describe what this PR adds, making sure to answer the following question
 ## Changes
 
 - Key change 1 
--  Key change 2
+- Key change 2
 - Add more if needed 
 
 ---
