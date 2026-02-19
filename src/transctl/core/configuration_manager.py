@@ -8,8 +8,8 @@ from transctl.models.app_config import AppConfig
 
 class ConfigurationManager:
     def __init__(self, cold_start: bool = False) -> None:
-        self._base_path: Path = Path(__file__).parent
-        self._work_dir: Path = self._base_path.parent.joinpath(f".{app_constants.APP_NAME}")
+        self._base_path: Path = Path.cwd().resolve()
+        self._work_dir: Path = self._base_path.joinpath(f".{app_constants.APP_NAME}")
         self._config_path: Path = self._base_path.joinpath(f".{app_constants.APP_NAME}.toml")
         self.configuration: AppConfig | None = None
 

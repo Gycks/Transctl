@@ -45,7 +45,6 @@ def cli() -> int:
         return 0
 
     except click.ClickException as ce:
-        click.echo("hello")
         logging.error(ConsoleFormatter.error(ce.format_message()))
         return ce.exit_code
 
@@ -53,7 +52,6 @@ def cli() -> int:
         return int(se.code or 0)
 
     except Exception as e:
-        click.echo("hello")
         logging.error(ConsoleFormatter.error(str(e)))
         return 1
 

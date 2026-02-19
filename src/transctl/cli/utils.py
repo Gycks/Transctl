@@ -1,4 +1,4 @@
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Type
 
 from transctl.models.engine_config import EngineConfig
 
@@ -36,7 +36,7 @@ def styled_prompt(label: str, default: Any | None = None, *, value_proc: Any | N
     )
 
 
-def construct_engine_params(engine_model: EngineConfig) -> dict[str, str]:
+def construct_engine_params(engine_model: Type[EngineConfig]) -> dict[str, str]:
     params: dict[str, str] = {}
     header_printed: bool = False
 
