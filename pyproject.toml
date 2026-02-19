@@ -4,18 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "transctl"
-version = "1.0.1"
+version = "1.0.2"
 description = "A command-line tool for managing application localization and generating translations using machine translation services."
 readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
     "click~=8.3.1",
-    "colorama~=0.4.6",
     "deepl~=1.27.0",
     "pydantic~=2.12.5",
     "click~=8.3.1",
-    "colorama~=0.4.6",
     "bs4~=0.0.2",
     "beautifulsoup4~=4.14.3",
     "tomli~=2.4.0",
