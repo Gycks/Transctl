@@ -1,7 +1,6 @@
-import subprocess
-
 from transctl.ci_runners.base_runner import BaseRunner
 from transctl.ci_runners.ci_runner_factory import CIRunnerFactory
+from transctl.core.translation_coordinator import TranslationCoordinator
 
 import click
 
@@ -12,7 +11,13 @@ import click
 @click.pass_context
 def ci(ctx: click.Context, glossary: str, no_pull_request: bool) -> None:
     if ctx.invoked_subcommand is None:
-        subprocess.run(["transctl", "run", "--glossary", glossary], check=True)
+        coordinator: TranslationCoordinator = TranslationCoordinator()
+        changed_files: list[str]
+        if glossary:
+            changed_files = coordinator.translate_from_config(glossary)
+        else:
+            changed_files = coordinator.translate_from_config()
+
         runner: BaseRunner = CIRunnerFactory.get_runner()
-        runner.run("Translations updated.", no_pull_request)
+        runner.run("Translations updated.", changed_files, no_pull_request)
         return

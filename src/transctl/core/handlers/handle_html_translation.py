@@ -40,9 +40,10 @@ class HtmlTranslationTranslationHandler(BaseTranslationHandler):
         return True
 
     def translate_file(self, file_path: Path, output_path: Path, glossary: Path | None = None,
-                       output_path_tag: str | None = None) -> None:
+                       output_path_tag: str | None = None) -> list[str]:
 
         self.logger.info(ConsoleFormatter.info(f"Processing path: {file_path}"))
+        result_write_paths: list[str] = []
 
         if file_path.suffix != self.extension:
             raise ValueError(f"File {file_path} does not have the expected extension {self.extension}")
@@ -112,8 +113,10 @@ class HtmlTranslationTranslationHandler(BaseTranslationHandler):
 
                 out_html = str(soup)
                 write_file(str(out_path.parent), out_path.name, out_html)
+                result_write_paths.append(str(out_path))
 
                 self.logger.info(ConsoleFormatter.success(f"[{self.source_language} - {target}] Localization done."))
             session.commit()
 
         self.prune_store()
+        return result_write_paths

@@ -32,8 +32,12 @@ def ensure_git_identity() -> None:
     run_git("config", "user.email", email, check=True)
 
 
-def commit_all(commit_message: str) -> bool:
-    run_git("add", "-A", check=True)
+def commit_changes(commit_message: str, changed_files: list[str]) -> bool:
+    for file in changed_files:
+        run_git("add", file, check=True)
+
+    # run_git("add", "-A", check=True)
+
     # If nothing staged, skip commit
     diff = run_git("diff", "--cached", "--name-only", check=True).stdout.strip()
     if not diff:

@@ -8,7 +8,7 @@ class BaseRunner(ABC):
         self.logger: logging.Logger = logging.getLogger(__name__)
 
     @abstractmethod
-    def run(self, commit_message: str, do_not_open_new_pull_request: bool = False) -> None:
+    def run(self, commit_message: str, changed_files: list[str], do_not_open_new_pull_request: bool = False) -> None:
         pass
 
     @staticmethod

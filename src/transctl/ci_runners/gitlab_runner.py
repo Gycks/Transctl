@@ -9,7 +9,7 @@ from transctl.ci_runners.base_runner import BaseRunner
 from transctl.console_formater import ConsoleFormatter
 from transctl.core.constants.app import APP_NAME
 from transctl.models.ci_runner_config import GitLabContext
-from transctl.utils.git_helpers import commit_all, git_has_changes, gitlab_authed_origin_url, push_head_to_branch, set_origin_url
+from transctl.utils.git_helpers import commit_changes, git_has_changes, gitlab_authed_origin_url, push_head_to_branch, set_origin_url
 
 
 class GitLabRunner(BaseRunner):
@@ -72,12 +72,11 @@ class GitLabRunner(BaseRunner):
                 "source_branch": source_branch,
                 "target_branch": target_branch,
                 "title": title,
-                "description": description,
-                # You can add: "remove_source_branch": True, "squash": True, etc.
+                "description": description
             },
         )
 
-    def run(self, commit_message: str, do_not_open_new_pull_request: bool = False) -> None:
+    def run(self, commit_message: str, changed_files: list[str], do_not_open_new_pull_request: bool = False) -> None:
         self.logger.info(ConsoleFormatter.info("Starting GitLab CI runner..."))
 
         if not git_has_changes():
@@ -97,7 +96,7 @@ class GitLabRunner(BaseRunner):
             self.logger.warning(ConsoleFormatter.warning(
                 f"Running with option 'pull-request'. Will push to new branch: {target_branch}"))
 
-        committed = commit_all(commit_message=commit_message)
+        committed = commit_changes(changed_files=changed_files, commit_message=commit_message)
         if not committed:
             self.logger.warning(ConsoleFormatter.warning("No changes staged for commit. Skipping commit and push."))
             return
