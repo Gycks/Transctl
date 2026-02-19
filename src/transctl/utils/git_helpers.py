@@ -33,10 +33,11 @@ def ensure_git_identity() -> None:
 
 
 def commit_changes(commit_message: str, changed_files: list[str]) -> bool:
-    for file in changed_files:
-        run_git("add", file, check=True)
+    # for file in changed_files:
+    #     run_git("add", file, check=True)
 
-    # run_git("add", "-A", check=True)
+    # WARNING: Commit all changes, not just the ones in changed_files, since internal files for storing and caching must be persisted too
+    run_git("add", "-A", check=True)
 
     # If nothing staged, skip commit
     diff = run_git("diff", "--cached", "--name-only", check=True).stdout.strip()
