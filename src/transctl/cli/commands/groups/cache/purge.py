@@ -11,3 +11,4 @@ def purge_cache(ctx: click.Context) -> None:
         cfg: ConfigurationManager = ConfigurationManager(cold_start=True)
         manifest: TranslationRunManifest = TranslationRunManifest(cfg)
         manifest.purge()
+        return

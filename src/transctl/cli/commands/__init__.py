@@ -1,3 +1,4 @@
+from .ci import ci
 from .groups.cache.g_manifest import g_manifest
 from .init import initialize
 from .prune import prune_store
@@ -12,5 +13,6 @@ COMMANDS = [
     initialize,
     prune_store,
     g_manifest,
-    run
+    run,
+    ci
 ]

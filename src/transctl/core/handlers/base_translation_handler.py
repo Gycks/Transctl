@@ -37,7 +37,7 @@ class BaseTranslationHandler(ABC):
         self.url_regex: re.Pattern[str] = re.compile(r"\bhttps?://[^\s<>()]+", re.IGNORECASE)
 
     @abstractmethod
-    def translate_file(self, file_path: Path, output_path: Path, glossary: Path | None = None, output_path_tag: str | None = None) -> None:
+    def translate_file(self, file_path: Path, output_path: Path, glossary: Path | None = None, output_path_tag: str | None = None) -> list[str]:
         pass
 
     def prune_store(self) -> None:

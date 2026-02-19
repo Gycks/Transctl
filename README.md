@@ -261,17 +261,3 @@ Example:
 }
 ```
 
----
-
-## Contributing
-
-Contributions are welcome.
-
-Please:
-
-- Keep code fully type-annotated  
-- Add docstrings to public functions and classes  
-- Include tests for business logic  
-- Follow existing structure and conventions  
-
-Refer to the pull request template for contribution guidelines.

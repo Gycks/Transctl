@@ -1,4 +1,3 @@
-import sys
 
 from .build import build_cache
 from .purge import purge_cache
@@ -11,7 +10,7 @@ import click
 def g_manifest(ctx: click.Context) -> None:
     if ctx.invoked_subcommand is None:
         click.echo(ctx.command.get_help(ctx))
-        sys.exit(0)
+        return
 
 
 g_manifest.add_command(build_cache)

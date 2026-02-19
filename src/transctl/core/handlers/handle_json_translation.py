@@ -28,9 +28,10 @@ class JsonTranslationTranslationHandler(BaseTranslationHandler):
         self.patterns: list[re.Pattern[str]] = [self.placeholder_regex, self.email_regex, self.url_regex]
 
     def translate_file(self, file_path: Path, output_path: Path, glossary: Path | None = None,
-                       output_path_tag: str | None = None) -> None:
+                       output_path_tag: str | None = None) -> list[str]:
 
         self.logger.info(ConsoleFormatter.info(f"Processing path: {file_path}"))
+        result_write_paths: list[str] = []
 
         if file_path.suffix != self.extension:
             raise ValueError(f"File {file_path} does not have the expected extension {self.extension}")
@@ -93,6 +94,8 @@ class JsonTranslationTranslationHandler(BaseTranslationHandler):
                     set_at_path(file_content_copy, key, translations[key])
 
                 write_json(str(out_path.parent), out_path.name, file_content_copy)
+                result_write_paths.append(str(out_path))
 
             session.commit()
         self.prune_store()
+        return result_write_paths
