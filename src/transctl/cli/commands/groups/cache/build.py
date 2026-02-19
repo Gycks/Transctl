@@ -12,3 +12,4 @@ def build_cache(ctx: click.Context, force: bool) -> None:
         cfg: ConfigurationManager = ConfigurationManager()
         manifest: TranslationRunManifest = TranslationRunManifest(cfg)
         manifest.rebuild_from_config(force=force)
+        return

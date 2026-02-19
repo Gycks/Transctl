@@ -14,3 +14,5 @@ def run(ctx: click.Context, glossary: str) -> None:
             coordinator.translate_from_config(glossary)
         else:
             coordinator.translate_from_config()
+
+        return

@@ -36,7 +36,7 @@ dev = [
 ]
 
 [project.scripts]
-transctl = "transctl.cli.main:main"
+transctl = "transctl.cli.main:cli"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

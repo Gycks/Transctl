@@ -3,6 +3,7 @@ import sys
 from importlib.metadata import version
 
 from transctl.cli.commands import COMMANDS
+from transctl.console_formater import ConsoleFormatter
 
 import click
 
@@ -28,16 +29,35 @@ def show_version() -> None:
 def main(ctx: click.Context, version: bool) -> None:
     if version:
         show_version()
-        sys.exit(0)
+        return
 
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
-        sys.exit(0)
+        return
 
 
 for command in COMMANDS:
     main.add_command(command)
 
 
+def cli() -> int:
+    try:
+        main(standalone_mode=False)
+        return 0
+
+    except click.ClickException as ce:
+        click.echo("hello")
+        logging.error(ConsoleFormatter.error(ce.format_message()))
+        return ce.exit_code
+
+    except SystemExit as se:
+        return int(se.code or 0)
+
+    except Exception as e:
+        click.echo("hello")
+        logging.error(ConsoleFormatter.error(str(e)))
+        return 1
+
+
 if __name__ == "__main__":
-    main()
+    raise SystemExit(cli())

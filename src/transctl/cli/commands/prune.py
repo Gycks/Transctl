@@ -15,3 +15,6 @@ def prune_store(ctx: click.Context) -> None:
 
         with Session(store.engine) as session:
             store.prune(session, PrunePolicy())
+
+        session.commit()
+        return

@@ -11,4 +11,4 @@ def show_resources(ctx: click.Context) -> None:
     if ctx.invoked_subcommand is None:
         langs: str = '\n'.join([f"* {val.value.upper()}" for val in TranslationResourceType])
         click.echo(langs)
-        sys.exit(0)
+        return

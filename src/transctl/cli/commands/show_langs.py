@@ -11,4 +11,4 @@ def show_langs(ctx: click.Context) -> None:
     if ctx.invoked_subcommand is None:
         langs: str = '\n'.join([f"* [{key}] : {val}" for key, val in SUPPORTED_LANGUAGES.items()])
         click.echo(langs)
-        sys.exit(0)
+        return
